@@ -1,4 +1,5 @@
-
+const express = require('express');
+const app = express();
 
 class Shashki {
   constructor() {
@@ -90,6 +91,46 @@ class Shashki {
   }
 
   checkChops(whoseMove) {
+
+      for (const arr of this.ways) {
+          const length = arr.length - 2;
+
+          for (let i = 0; i < length; i++) {
+            if (this.whoseMove === 1) {
+              if ((this.field[arr[i]] === 1) && (this.field[arr[i + 1]] === 2) && (this.field[arr[i + 2]] === 0)) {
+
+                this.field[arr[i]].chop = true;
+                this.chop = true;
+                this.field[arr[i + 2]].border = true;
+
+              } else if ((this.field[arr[i]] === 0) && (this.field[arr[i + 1]] === 2) && (this.field[arr[i + 2]] === 1)) {
+                
+                this.field[arr[i]].border = true;
+                this.chop = true;
+                this.field[arr[i + 2]].chop = true;
+
+              }
+
+            } else if (this.whoseMove === 2) {
+              
+              if ((this.field[arr[i]] === 2) && (this.field[arr[i + 1]] === 1) && (this.field[arr[i + 2]] === 0)) {
+
+                this.field[arr[i]].chop = true;
+                this.chop = true;
+                this.field[arr[i + 2]].border = true;
+
+              } else if ((this.field[arr[i]] === 0) && (this.field[arr[i + 1]] === 1) && (this.field[arr[i + 2]] === 2)) {
+                
+                this.field[arr[i]].border = true;
+                this.chop = true;
+                this.field[arr[i + 2]].chop = true;
+
+              }
+    
+            }
+          }
+        
+      }
     
   }
 
@@ -113,6 +154,11 @@ class Shashki {
   }
 }
 
-const shashki = new Shashki();
 
-console.log(shashki);
+app.get('/api/getField', (req, res) => {
+  const shashki = new Shashki();
+  res.set('Content-Type', 'application/json; charset: utf-8');
+  res.end(JSON.stringify(shashki.field));
+});
+
+app.listen(3001, console.log('Сервер работает на порту 3001'));
