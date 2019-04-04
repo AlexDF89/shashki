@@ -1,0 +1,33 @@
+.field-ul {
+  display: flex;
+  max-width: 480px;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.field-li {
+  list-style-type: none;
+  box-sizing: border-box;
+  flex-basis: 12.5%;
+  position: relative;
+}
+.field-li-in {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 50%;
+  padding-bottom: 50%;
+}
+.black-cell {
+  background-color: #525252;
+}
+.white-cell {
+  background-color: #d9d9d9;
+}
+.field-img {
+  position: absolute;
+  width: 80%;
+  top: 10%;
+  left: 10%;
+  cursor: pointer;
+}

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import './scss/app.scss';
+
+import FieldContainer from './containers/FieldContainer';
 
 class App extends Component {
   render() {
@@ -6,6 +9,9 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
         </header>
+
+        <FieldContainer />
+
       </div>
     );
   }
