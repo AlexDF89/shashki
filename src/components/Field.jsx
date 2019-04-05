@@ -1,12 +1,12 @@
 import React from 'react';
-import Cell from '../components/Cell';
+import CellContainer from '../containers/CellContainer';
 
 function Field(props) {
   return (
     <section>
       <ul className='field-ul'>
-        {props.field.map(cell => 
-          <Cell cell={cell} />
+        {props.field.map((cell, i) => 
+          <CellContainer key={i} cell={cell} />
         )}
       </ul>
     </section>

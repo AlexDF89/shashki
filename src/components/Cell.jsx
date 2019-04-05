@@ -1,11 +1,38 @@
 import React from 'react';
+import { DropTarget } from 'react-dnd';
 
+import CheckerContainer from '../containers/CheckerContainer';
 import WChecker from '../images/w.png';
 import BChecker from '../images/b.png';
 
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    hocered: monitor.isOver(),
+    checker: monitor.getItem()
+  }
+}
+
+const boardSquareTarget = {
+  canDrop(props, monitor) {
+
+    const item = monitor.getItem();
+    props.onCanDrop([props.cell, item]);
+    
+  },
+  hover(props, monitor, component) {
+
+  },
+  drop(props, monitor, component) {
+
+  }
+}
+
 function Cell(props) {
-  console.log(props);
-  return (
+
+  const { connectDropTarget, hovered, checker } = props;
+
+  return connectDropTarget(
     <li className='field-li'>
       <div className=
         {`field-li-in
@@ -18,11 +45,11 @@ function Cell(props) {
             )
           }
         `}>
-        {props.cell.checker === 1 ? <img className='field-img' src={WChecker} alt='' /> : ''}
-        {props.cell.checker === 2 ? <img className='field-img' src={BChecker} alt='' /> : ''}
+        {props.cell.checker === 1 ? <CheckerContainer checker={props.cell} src={WChecker} /> : ''}
+        {props.cell.checker === 2 ? <CheckerContainer checker={props.cell} src={BChecker} /> : ''}
       </div>
     </li>
   );
 }
 
-export default Cell;
+export default DropTarget('checker', boardSquareTarget, collect)(Cell)

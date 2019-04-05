@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 class Shashki {
   constructor() {
@@ -159,6 +161,13 @@ app.get('/api/getField', (req, res) => {
   const shashki = new Shashki();
   res.set('Content-Type', 'application/json; charset: utf-8');
   res.end(JSON.stringify(shashki.field));
+});
+
+app.post('/api/canDrop', (req, res) => {
+
+  console.log(req.body);
+  res.end(JSON.stringify(req.body));
+
 });
 
 app.listen(3001, console.log('Сервер работает на порту 3001'));
