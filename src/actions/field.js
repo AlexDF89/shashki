@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const GET_FIELD = 'GET_FIELD';
 
-let field = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
+let cells = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
               'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7',
               'a6', 'b6', 'c6', 'd6', 'e6', 'f6', 'g6', 'h6',
               'a5', 'b5', 'c5', 'd5', 'e5', 'f5', 'g5', 'h5', 
@@ -17,13 +17,16 @@ export function getField() {
     return axios.get('api/getField')
       .then(response => response.data)
       .then(origField => {
-        field = field.map(cell => {
+        cells = cells.map(cell => {
           if (origField[cell]) return origField[cell];
           return cell;
         });
         return dispatch({
           type: GET_FIELD,
-          field
+          field: {
+            moves: origField.moves,
+            cells
+          }
         })
       })
       .catch(err => console.error(err.message));

@@ -11,7 +11,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onHandleDrop: checker => dispatch(handleDrop(checker))
+    onHandleDrop: drop => dispatch(handleDrop(drop))
   }
 }
 

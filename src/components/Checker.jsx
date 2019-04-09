@@ -8,7 +8,6 @@ const checkerSource = {
   },
   endDrag(props, monitor, component) {
     if (!monitor.didDrop()) return;
-    return props.onHandleDrop(props.checker.coordinate);
   }
 }
 

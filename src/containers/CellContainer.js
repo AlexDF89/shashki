@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 
 import Cell from '../components/Cell';
-import { canDrop } from '../actions';
+import { handleDrop } from '../actions';
 
 function mapStateToProps(state) {
   return {
-    drop: state.drop
+    field: state.field
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onCanDrop: drop => dispatch(canDrop(drop))
+    onHandleDrop: drop => dispatch(handleDrop(drop))
   }
 }
 

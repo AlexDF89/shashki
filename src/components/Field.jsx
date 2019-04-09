@@ -5,7 +5,7 @@ function Field(props) {
   return (
     <section>
       <ul className='field-ul'>
-        {props.field.map((cell, i) => 
+        {props.field.cells.map((cell, i) => 
           <CellContainer key={i} cell={cell} />
         )}
       </ul>

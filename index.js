@@ -7,6 +7,7 @@ class Shashki {
   constructor() {
     this.field = {};
     this.whoseMove = 1; // 1 - белые, 2 - черные
+
     this.ways = {
       GoldWay:       ['a1', 'b2', 'c3', 'd4', 'e5', 'f6', 'g7', 'h8'],
       DoubleWayG1A7: ['g1', 'f2', 'e3', 'd4', 'c5', 'b6', 'a7'],
@@ -22,6 +23,7 @@ class Shashki {
     }
 
     this.createField();
+    this.checkMoves();
   }
 
   createField() {
@@ -65,6 +67,9 @@ class Shashki {
         
       }
       let j = (i % 2) ? 2 : 1;
+      this.field.chops = false; // есть ли срубы у текущего игрока
+      this.field.moves = [];
+
       for (; j <= 8; j += 2) {
 
         const cell = {};
@@ -92,40 +97,43 @@ class Shashki {
     cell.queen = queen;
   }
 
-  checkChops(whoseMove) {
+  checkChops() {
 
-      for (const arr of this.ways) {
-          const length = arr.length - 2;
+      for (const way in this.ways) {
+          const length = this.ways[way].length - 2;
 
           for (let i = 0; i < length; i++) {
             if (this.whoseMove === 1) {
-              if ((this.field[arr[i]] === 1) && (this.field[arr[i + 1]] === 2) && (this.field[arr[i + 2]] === 0)) {
 
-                this.field[arr[i]].chop = true;
-                this.chop = true;
-                this.field[arr[i + 2]].border = true;
+              // Проверка срубов для первого игрока в одну и другую сторону
+              if ((this.field[this.ways[way][i]].checker === 1) && (this.field[this.ways[way][i + 1]].checker === 2) && (this.field[this.ways[way][i + 2]].checker === 0)) {
 
-              } else if ((this.field[arr[i]] === 0) && (this.field[arr[i + 1]] === 2) && (this.field[arr[i + 2]] === 1)) {
-                
-                this.field[arr[i]].border = true;
-                this.chop = true;
-                this.field[arr[i + 2]].chop = true;
+                this.field.chops = true;
+                const move = [this.ways[way][i], this.ways[way][i + 2]];
+                this.field.moves.push(move);
+
+              } else if ((this.field[this.ways[way][i]].checker === 0) && (this.field[this.ways[way][i + 1]].checker === 2) && (this.field[this.ways[way][i + 2]].checker === 1)) {
+
+                this.field.chops = true;
+                const move = [this.ways[way][i + 2], this.ways[way][i]];
+                this.field.moves.push(move);
 
               }
 
+              // Проверка срубов для второго игрока в одну и другую сторону
             } else if (this.whoseMove === 2) {
               
-              if ((this.field[arr[i]] === 2) && (this.field[arr[i + 1]] === 1) && (this.field[arr[i + 2]] === 0)) {
+              if ((this.field[this.ways[way][i]].checker === 2) && (this.field[this.ways[way][i + 1]].checker === 1) && (this.field[this.ways[way][i + 2]].checker === 0)) {
 
-                this.field[arr[i]].chop = true;
-                this.chop = true;
-                this.field[arr[i + 2]].border = true;
+                this.field.chops = true;
+                const move = [this.ways[way][i], this.ways[way][i + 2]];
+                this.field.moves.push(move);
 
-              } else if ((this.field[arr[i]] === 0) && (this.field[arr[i + 1]] === 1) && (this.field[arr[i + 2]] === 2)) {
-                
-                this.field[arr[i]].border = true;
-                this.chop = true;
-                this.field[arr[i + 2]].chop = true;
+              } else if ((this.field[this.ways[way][i]].checker === 0) && (this.field[this.ways[way][i + 1]].checker === 1) && (this.field[this.ways[way][i + 2]].checker === 2)) {
+
+                this.field.chops = true;
+                const move = [this.ways[way][i + 2], this.ways[way][i]];
+                this.field.moves.push(move);
 
               }
     
@@ -136,11 +144,41 @@ class Shashki {
     
   }
 
-  checkWaysOfChecker(cell) {
+  checkMoves() {
+      this.checkChops();
+      if (this.field.chops === true) return; // если есть срубы, то больше не проверяем ходы, а просто возвращаем moves
 
-    if (this.whoseMove === 1 && cell.checker === 1) {
+    if (this.whoseMove === 1) {
+
+      for (const way in this.ways) {
+
+        const length = this.ways[way].length - 1;
+
+        for (let i = 0; i < length; i++) {
+          if ((this.field[this.ways[way][i]].checker === 1) && (this.field[this.ways[way][i + 1]].checker === 0)) {
+
+            const move = [this.ways[way][i], this.ways[way][i + 1]];
+            this.field.moves.push(move);
+    
+          }
+        }
+      }
       
-    } else if (this.whoseMove === 2 && cell.checker === 2) {
+    } else if (this.whoseMove === 2) {
+
+      for (const way in this.ways) {
+
+        const length = this.ways[way].length - 1;
+
+        for (let i = 0; i < length; i++) {
+          if ((this.field[this.ways[way][i + 1]].checker === 1) && (this.field[this.ways[way][i]].checker === 0)) {
+
+            const move = [this.ways[way][i + 1], this.ways[way][i]];
+            this.field.moves.push(move);
+    
+          }
+        }
+      }
 
     }
 
@@ -163,7 +201,7 @@ app.get('/api/getField', (req, res) => {
   res.end(JSON.stringify(shashki.field));
 });
 
-app.post('/api/canDrop', (req, res) => {
+app.post('/api/handleDrop', (req, res) => {
 
   console.log(req.body);
   res.end(JSON.stringify(req.body));

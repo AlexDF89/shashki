@@ -16,14 +16,18 @@ function collect(connect, monitor) {
 const boardSquareTarget = {
   canDrop(props, monitor) {
 
-    const item = monitor.getItem();
-    props.onCanDrop([props.cell, item]);
+    // const item = monitor.getItem();
+    // props.onCanDrop([props.cell, item]);
+    return true;
     
   },
   hover(props, monitor, component) {
 
   },
   drop(props, monitor, component) {
+    console.log(props);
+
+    props.onHandleDrop([[monitor.getItem().coordinate, props.cell.coordinate], props.field.moves]);
 
   }
 }
