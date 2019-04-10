@@ -1,3 +1,3 @@
-export { GET_FIELD, getField } from './field';
+export { GET_FIELD, HANDLE_DROP, getField, handleDrop } from './field';
 export {  } from './checker';
-export { CAN_DROP, HANDLE_DROP, canDrop, handleDrop } from './cell';
+export { CAN_DROP, canDrop } from './cell';

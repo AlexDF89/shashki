@@ -3,10 +3,15 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+const games = [];
+let idOfLastGame = -1;
+
 class Shashki {
   constructor() {
     this.field = {};
-    this.whoseMove = 1; // 1 - белые, 2 - черные
+    this.field.whoseMove = 1; // 1 - белые, 2 - черные
+
+    this.field.gameID = ++idOfLastGame;
 
     this.ways = {
       GoldWay:       ['a1', 'b2', 'c3', 'd4', 'e5', 'f6', 'g7', 'h8'],
@@ -80,8 +85,6 @@ class Shashki {
         (j <= 3) ? checker = 1 : (j >= 6) ? checker = 2 : checker = 0; //0 - пустое, 1 - белая шашка, 2 - черная шашка
         cell.checker = checker;
 
-        cell.border = false;
-
         cell.queen = false;
 
         this.field[cell.coordinate] = cell;
@@ -100,39 +103,51 @@ class Shashki {
   checkChops() {
 
       for (const way in this.ways) {
-          const length = this.ways[way].length - 2;
+          const length = this.ways[way].length;
 
           for (let i = 0; i < length; i++) {
-            if (this.whoseMove === 1) {
+            if (this.field.whoseMove === 1) {
 
               // Проверка срубов для первого игрока в одну и другую сторону
-              if ((this.field[this.ways[way][i]].checker === 1) && (this.field[this.ways[way][i + 1]].checker === 2) && (this.field[this.ways[way][i + 2]].checker === 0)) {
+              if ((this.field[this.ways[way][i]].checker === 1) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 2) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 0)) {
 
                 this.field.chops = true;
-                const move = [this.ways[way][i], this.ways[way][i + 2]];
+                const hangman = this.ways[way][i]; // шашка, которая рубит
+                const newHangmanPlace = this.ways[way][i + 2]; // место, куда встает шашка после сруба
+                const victim = this.ways[way][i + 1]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
                 this.field.moves.push(move);
 
-              } else if ((this.field[this.ways[way][i]].checker === 0) && (this.field[this.ways[way][i + 1]].checker === 2) && (this.field[this.ways[way][i + 2]].checker === 1)) {
+              } else if ((this.field[this.ways[way][i]].checker === 0) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 2) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 1)) {
 
                 this.field.chops = true;
-                const move = [this.ways[way][i + 2], this.ways[way][i]];
+                const hangman = this.ways[way][i + 2]; // шашка, которая рубит
+                const newHangmanPlace = this.ways[way][i]; // место, куда встает шашка после сруба
+                const victim = this.ways[way][i + 1]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
                 this.field.moves.push(move);
 
               }
 
               // Проверка срубов для второго игрока в одну и другую сторону
-            } else if (this.whoseMove === 2) {
+            } else if (this.field.whoseMove === 2) {
               
-              if ((this.field[this.ways[way][i]].checker === 2) && (this.field[this.ways[way][i + 1]].checker === 1) && (this.field[this.ways[way][i + 2]].checker === 0)) {
+              if ((this.field[this.ways[way][i]].checker === 2) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 1) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 0)) {
 
                 this.field.chops = true;
-                const move = [this.ways[way][i], this.ways[way][i + 2]];
+                const hangman = this.ways[way][i]; // шашка, которая рубит
+                const newHangmanPlace = this.ways[way][i + 2]; // место, куда встает шашка после сруба
+                const victim = this.ways[way][i + 1]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
                 this.field.moves.push(move);
 
-              } else if ((this.field[this.ways[way][i]].checker === 0) && (this.field[this.ways[way][i + 1]].checker === 1) && (this.field[this.ways[way][i + 2]].checker === 2)) {
+              } else if ((this.field[this.ways[way][i]].checker === 0) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 1) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 2)) {
 
                 this.field.chops = true;
-                const move = [this.ways[way][i + 2], this.ways[way][i]];
+                const hangman = this.ways[way][i + 2]; // шашка, которая рубит
+                const newHangmanPlace = this.ways[way][i]; // место, куда встает шашка после сруба
+                const victim = this.ways[way][i + 1]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
                 this.field.moves.push(move);
 
               }
@@ -145,17 +160,17 @@ class Shashki {
   }
 
   checkMoves() {
-      this.checkChops();
-      if (this.field.chops === true) return; // если есть срубы, то больше не проверяем ходы, а просто возвращаем moves
+    this.checkChops();
+    if (this.field.chops === true) return; // если есть срубы, то больше не проверяем ходы, а просто возвращаем moves
 
-    if (this.whoseMove === 1) {
+    if (this.field.whoseMove === 1) {
 
       for (const way in this.ways) {
 
-        const length = this.ways[way].length - 1;
+        const length = this.ways[way].length;
 
         for (let i = 0; i < length; i++) {
-          if ((this.field[this.ways[way][i]].checker === 1) && (this.field[this.ways[way][i + 1]].checker === 0)) {
+          if ((this.field[this.ways[way][i]].checker === 1) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 0)) {
 
             const move = [this.ways[way][i], this.ways[way][i + 1]];
             this.field.moves.push(move);
@@ -164,14 +179,14 @@ class Shashki {
         }
       }
       
-    } else if (this.whoseMove === 2) {
+    } else if (this.field.whoseMove === 2) {
 
       for (const way in this.ways) {
 
-        const length = this.ways[way].length - 1;
+        const length = this.ways[way].length;
 
         for (let i = 0; i < length; i++) {
-          if ((this.field[this.ways[way][i + 1]].checker === 1) && (this.field[this.ways[way][i]].checker === 0)) {
+          if (this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 2) && (this.field[this.ways[way][i]].checker === 0)) {
 
             const move = [this.ways[way][i + 1], this.ways[way][i]];
             this.field.moves.push(move);
@@ -192,19 +207,113 @@ class Shashki {
   drawChecker(cell, checker) {
     cell.checker = checker;
   }
+
+  handleMove(checkers, done) {
+    this.field.moves.forEach((move, i) => {
+      if (move[0] === checkers[0] && move[1] === checkers[1]) {
+        this.field[move[0]].checker = 0;
+        this.field[move[1]].checker = this.field.whoseMove;
+
+        if (this.field[move[2]]) {
+          this.field[move[2]].checker = 0;
+          console.log('222222222222222222222')
+          console.log(this.field.whoseMove)
+          console.log(this.field.moves)
+          this.moves = [];
+          this.checkAdditionalChops(move[1]);
+          if (this.moves[0]) {
+            done();
+          } else {
+            this.field.chops = false;
+          }
+        }
+
+        if (this.field.chops === false) {
+          this.field.whoseMove === 1 ? this.field.whoseMove = 2 : this.field.whoseMove = 1;
+          this.field.moves = [];
+          this.checkMoves();
+        }
+        console.log('*********************')
+        console.log(this.field.whoseMove)
+        console.log(this.field.moves)
+        done();
+
+      }
+    });
+  }
+
+  checkAdditionalChops(checker) {
+    for (const way in this.ways) {
+      this.ways[way].forEach((square, i) => {
+        if (square === checker) {
+          if (this.field.whoseMove === 1) {
+
+            // Проверка срубов для первого игрока в одну и другую сторону
+            if ((this.field[this.ways[way][i]].checker === 1) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 2) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 0)) {
+
+              this.field.chops = true;
+              const hangman = this.ways[way][i]; // шашка, которая рубит
+              const newHangmanPlace = this.ways[way][i + 2]; // место, куда встает шашка после сруба
+              const victim = this.ways[way][i + 1]; // шашка, которую рубят
+              const move = [hangman, newHangmanPlace, victim];
+              this.field.moves.push(move);
+
+            } else if ((this.field[this.ways[way][i]].checker === 0) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 2) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 1)) {
+
+              this.field.chops = true;
+              const hangman = this.ways[way][i + 2]; // шашка, которая рубит
+              const newHangmanPlace = this.ways[way][i]; // место, куда встает шашка после сруба
+              const victim = this.ways[way][i + 1]; // шашка, которую рубят
+              const move = [hangman, newHangmanPlace, victim];
+              this.field.moves.push(move);
+
+            }
+
+            // Проверка срубов для второго игрока в одну и другую сторону
+          } else if (this.field.whoseMove === 2) {
+            
+            if ((this.field[this.ways[way][i]].checker === 2) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 1) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 0)) {
+
+              this.field.chops = true;
+              const hangman = this.ways[way][i]; // шашка, которая рубит
+              const newHangmanPlace = this.ways[way][i + 2]; // место, куда встает шашка после сруба
+              const victim = this.ways[way][i + 1]; // шашка, которую рубят
+              const move = [hangman, newHangmanPlace, victim];
+              this.field.moves.push(move);
+
+            } else if ((this.field[this.ways[way][i]].checker === 0) && this.field[this.ways[way][i + 1]] && (this.field[this.ways[way][i + 1]].checker === 1) && this.field[this.ways[way][i + 2]] && (this.field[this.ways[way][i + 2]].checker === 2)) {
+
+              this.field.chops = true;
+              const hangman = this.ways[way][i + 2]; // шашка, которая рубит
+              const newHangmanPlace = this.ways[way][i]; // место, куда встает шашка после сруба
+              const victim = this.ways[way][i + 1]; // шашка, которую рубят
+              const move = [hangman, newHangmanPlace, victim];
+              this.field.moves.push(move);
+
+            }
+  
+          }
+
+        }
+      });
+    };
+  }
+
 }
 
 
 app.get('/api/getField', (req, res) => {
   const shashki = new Shashki();
+  games.push(shashki);
   res.set('Content-Type', 'application/json; charset: utf-8');
   res.end(JSON.stringify(shashki.field));
 });
 
 app.post('/api/handleDrop', (req, res) => {
 
-  console.log(req.body);
-  res.end(JSON.stringify(req.body));
+  games[req.body[2]].handleMove(req.body[0], function() {
+    res.end(JSON.stringify(games[req.body[2]].field));
+  });
 
 });
 

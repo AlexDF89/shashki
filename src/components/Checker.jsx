@@ -3,7 +3,7 @@ import React from 'react';
 import { DragSource } from 'react-dnd';
 
 const checkerSource = {
-  beginDrag(props) {
+  beginDrag(props, monitor, component) {
     return props.checker;
   },
   endDrag(props, monitor, component) {

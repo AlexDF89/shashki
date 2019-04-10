@@ -25,9 +25,13 @@ const boardSquareTarget = {
 
   },
   drop(props, monitor, component) {
-    console.log(props);
 
-    props.onHandleDrop([[monitor.getItem().coordinate, props.cell.coordinate], props.field.moves]);
+    props.field.moves.forEach(elem => {
+
+      if ((elem[0] === monitor.getItem().coordinate) && (elem[1] === props.cell.coordinate)) {
+        props.onHandleDrop([[monitor.getItem().coordinate, props.cell.coordinate], props.field.moves, props.field.gameID]);
+      }
+    });
 
   }
 }

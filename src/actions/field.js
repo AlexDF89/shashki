@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 export const GET_FIELD = 'GET_FIELD';
+export const HANDLE_DROP = 'HANDLE_DROP';
 
-let cells = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
+let cellsArr = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
               'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7',
               'a6', 'b6', 'c6', 'd6', 'e6', 'f6', 'g6', 'h6',
               'a5', 'b5', 'c5', 'd5', 'e5', 'f5', 'g5', 'h5', 
@@ -17,17 +18,43 @@ export function getField() {
     return axios.get('api/getField')
       .then(response => response.data)
       .then(origField => {
-        cells = cells.map(cell => {
+        const cells = cellsArr.map(cell => {
           if (origField[cell]) return origField[cell];
           return cell;
         });
         return dispatch({
           type: GET_FIELD,
           field: {
+            gameID: origField.gameID,
+            whoseMove: origField.whoseMove,
             moves: origField.moves,
             cells
           }
         })
+      })
+      .catch(err => console.error(err.message));
+  }
+}
+
+export function handleDrop(drop) {
+  const data = [drop[0], drop[1], drop[2]];
+  return dispatch => {
+    return axios.post('api/handleDrop', data)
+      .then(response => response.data)
+      .then(origField => {
+        const cells = cellsArr.map(cell => {
+          if (origField[cell]) return origField[cell];
+          return cell;
+        });
+        return dispatch({
+          type: HANDLE_DROP,
+          field: {
+            gameID: origField.gameID,
+            whoseMove: origField.whoseMove,
+            moves: origField.moves,
+            cells
+          }
+       })
       })
       .catch(err => console.error(err.message));
   }
