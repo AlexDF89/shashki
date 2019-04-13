@@ -3,7 +3,10 @@ import { DropTarget } from 'react-dnd';
 
 import CheckerContainer from '../containers/CheckerContainer';
 import WChecker from '../images/w.png';
+import WQChecker from '../images/wq.png';
+
 import BChecker from '../images/b.png';
+import BQChecker from '../images/bq.png';
 
 function collect(connect, monitor) {
   return {
@@ -53,8 +56,8 @@ function Cell(props) {
             )
           }
         `}>
-        {props.cell.checker === 1 ? <CheckerContainer checker={props.cell} src={WChecker} /> : ''}
-        {props.cell.checker === 2 ? <CheckerContainer checker={props.cell} src={BChecker} /> : ''}
+        {props.cell.checker === 1 ? !props.cell.queen ? <CheckerContainer checker={props.cell} src={WChecker} /> : <CheckerContainer checker={props.cell} src={WQChecker} /> : '' }
+        {props.cell.checker === 2 ? !props.cell.queen ? <CheckerContainer checker={props.cell} src={BChecker} /> : <CheckerContainer checker={props.cell} src={BQChecker} /> : ''}
       </div>
     </li>
   );

@@ -259,6 +259,8 @@ class Shashki {
   }
 
   checkMovesOfQueens() {
+    this.checkChopsOfQueen();
+    if (this.field.chops === true) return; // если есть срубы, то больше не проверяем ходы, а просто возвращаем moves
 
     this.field.queens.forEach(queen => {
       if (this.field.whoseMove === 1 && this.field[queen].checker === 1) {
@@ -319,9 +321,37 @@ class Shashki {
 
   }
 
-  checkChopsOfQueen(checker) {
-    this.waysOfCells[checker].forEach(way => {
-      
+  checkChopsOfQueens(checker) {
+    this.field.queens.forEach(queen => {
+
+      if (this.field.whoseMove === 1 && this.field[queen].checker === 1) {
+        this.waysOfCells.forEach(way => {
+          const length = way.length;
+          const indexOfQueen = way.indexOf(queen);
+
+          for(let i = indexOfQueen + 1; i < length;  i++) {
+
+            if (this.field[way[i]].checker === 1) break;
+
+            for (let j = i + 1; j < length; j++) {
+
+              if (this.field[way[j]] && (this.field[way[j]].checker === 1 || this.field[way[j]].checker === 2)) break;
+
+              if (this.field[way[i]] && (this.field[way[i]].checker === 2) && this.field[way[j]] && this.field[way[j]].checker === 0) {
+
+                
+
+                for ()
+
+              }
+            }
+          }
+
+        });
+
+      } else if (this.field.whoseMove === 2 && this.field[queen].checker === 2) {
+
+      }
     });
   }
 
