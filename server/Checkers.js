@@ -313,8 +313,8 @@ module.exports = class Checkers {
 
   }
 
-  checkChopsOfQueens() {
-    this.field.queens.forEach(queen => {
+  checkChopsOfQueens(queens) {
+    queens.forEach(queen => {
 
       this.waysOfCells[queen].forEach(way => {
 
@@ -695,6 +695,10 @@ module.exports = class Checkers {
     });
   }
 
+  checkAdditionalChopsOfQueen(queen) {
+    this.checkChopsOfQueens([queen]);
+  }
+
   addQueen(cell) {
     this.field.queens.push(cell);
   }
@@ -739,7 +743,7 @@ module.exports = class Checkers {
 
             this.field.moves = [];
             if (this.field[oneMove].queen) {
-              //this.checkChopsOfQueen(oneMove);
+              this.checkAdditionalChopsOfQueen(oneMove);
             } else {
               this.checkAdditionalChops(oneMove);
             }
@@ -755,7 +759,7 @@ module.exports = class Checkers {
             this.field.moves = [];
 
             this.checkChops();
-            this.checkChopsOfQueens();
+            this.checkChopsOfQueens(this.field.queens);
 
             this.checkMovesOfQueens();
 						this.checkMoves();
