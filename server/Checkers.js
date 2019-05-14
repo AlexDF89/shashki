@@ -314,7 +314,385 @@ module.exports = class Checkers {
   }
 
   checkChopsOfQueens() {
-    
+    this.field.queens.forEach(queen => {
+
+      this.waysOfCells[queen].forEach(way => {
+
+        const indexOfQueen = way.indexOf(queen);
+        const lengthOfWay = way.length;
+
+        if (this.field[queen].checker === 1 && this.field.whoseMove === 1) {
+
+          for (let i = indexOfQueen + 1; i < lengthOfWay; i++) {
+
+            if (this.field[way[i]].checker === 1) break;
+            if (this.field[way[i]].checker === 2 && this.field[way[i + 1]] && this.field[way[i + 1]].checker !== 0) break;
+
+            if (this.field[way[i]].checker === 2 && this.field[way[i + 1]] && this.field[way[i + 1]].checker === 0) {
+
+              this.field.chops = true;
+              const intermediateWays = [];
+              let intermediateChops = false;
+
+
+              for (let j = i + 1; j < lengthOfWay; j++) {
+
+                if (this.field[way[j]].checker !== 0) break;
+
+                const hangman = queen; // шашка, которая рубит
+                const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                const victim = way[i]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
+                intermediateWays.push(move);
+
+                this.waysOfCells[way[j]].forEach(way2 => {
+
+                  if (way2.indexOf(queen) === -1) {
+
+                    const indexOfEmptyCell = way2.indexOf(way[j]);
+                    const lengthOfWay2 = way2.length;
+
+                    let isIntermediateChops = false;
+
+                    for (let k = indexOfEmptyCell + 1; k < lengthOfWay2; k++) {
+
+                      if (this.field[way2[k]].checker === 1) break;
+                      if (this.field[way2[k]].checker === 2 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker !== 0) break;
+
+                      if (this.field[way2[k]].checker === 2 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker === 0) {
+
+                        intermediateChops = true;
+                        isIntermediateChops = true;
+                        const hangman = queen; // шашка, которая рубит
+                        const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                        const victim = way[i]; // шашка, которую рубят
+                        const move = [hangman, newHangmanPlace, victim];
+                        this.field.moves.push(move);
+
+                        break;
+
+                      }
+
+                    }
+                    if (!isIntermediateChops) {
+                      
+                      for (let k = indexOfEmptyCell - 1; k >= 0; k--) {
+
+                        if (this.field[way2[k]].checker === 1) break;
+                        if (this.field[way2[k]].checker === 2 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker !== 0) break;
+
+                        if (this.field[way2[k]].checker === 2 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker === 0) {
+
+                          intermediateChops = true;
+                          const hangman = queen; // шашка, которая рубит
+                          const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                          const victim = way[i]; // шашка, которую рубят
+                          const move = [hangman, newHangmanPlace, victim];
+                          this.field.moves.push(move);
+
+                          break;
+
+                        }
+
+                      }
+                    }
+
+                  }
+
+                });
+
+              }
+
+              if (!intermediateChops) {
+
+                this.field.moves = this.field.moves.concat(intermediateWays);
+
+              }
+
+            }
+
+          }
+
+          for (let i = indexOfQueen - 1; i >= 0; i--) {
+
+            if (this.field[way[i]].checker === 1) break;
+            if (this.field[way[i]].checker === 2 && this.field[way[i - 1]] && this.field[way[i - 1]].checker !== 0) break;
+
+            if (this.field[way[i]].checker === 2 && this.field[way[i - 1]] && this.field[way[i - 1]].checker === 0) {
+
+              this.field.chops = true;
+              const intermediateWays = [];
+              let intermediateChops = false;
+
+
+              for (let j = i - 1; j >= 0; j--) {
+
+                if (this.field[way[j]].checker !== 0) break;
+
+                const hangman = queen; // шашка, которая рубит
+                const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                const victim = way[i]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
+                intermediateWays.push(move);
+
+                this.waysOfCells[way[j]].forEach(way2 => {
+
+                  if (way2.indexOf(queen) === -1) {
+
+                    const indexOfEmptyCell = way2.indexOf(way[j]);
+                    const lengthOfWay2 = way2.length;
+
+                    let isIntermediateChops = false;
+
+                    for (let k = indexOfEmptyCell + 1; k < lengthOfWay2; k++) {
+
+                      if (this.field[way2[k]].checker === 1) break;
+                      if (this.field[way2[k]].checker === 2 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker !== 0) break;
+
+                      if (this.field[way2[k]].checker === 2 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker === 0) {
+
+                        intermediateChops = true;
+                        isIntermediateChops = true;
+                        const hangman = queen; // шашка, которая рубит
+                        const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                        const victim = way[i]; // шашка, которую рубят
+                        const move = [hangman, newHangmanPlace, victim];
+                        this.field.moves.push(move);
+
+                        break;
+
+                      }
+
+                    }
+                    if (!isIntermediateChops) {
+                      
+                      for (let k = indexOfEmptyCell - 1; k >= 0; k--) {
+
+                        if (this.field[way2[k]].checker === 1) break;
+                        if (this.field[way2[k]].checker === 2 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker !== 0) break;
+
+                        if (this.field[way2[k]].checker === 2 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker === 0) {
+
+                          intermediateChops = true;
+                          const hangman = queen; // шашка, которая рубит
+                          const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                          const victim = way[i]; // шашка, которую рубят
+                          const move = [hangman, newHangmanPlace, victim];
+                          this.field.moves.push(move);
+
+                          break;
+
+                        }
+
+                      }
+                    }
+
+                  }
+
+                });
+
+              }
+
+              if (!intermediateChops) {
+
+                this.field.moves = this.field.moves.concat(intermediateWays);
+
+              }
+
+            }
+
+          }
+
+        }
+
+        if (this.field[queen].checker === 2 && this.field.whoseMove === 2) {
+
+          for (let i = indexOfQueen + 1; i < lengthOfWay; i++) {
+
+            if (this.field[way[i]].checker === 2) break;
+            if (this.field[way[i]].checker === 1 && this.field[way[i + 1]] && this.field[way[i + 1]].checker !== 0) break;
+
+            if (this.field[way[i]].checker === 1 && this.field[way[i + 1]] && this.field[way[i + 1]].checker === 0) {
+
+              this.field.chops = true;
+              const intermediateWays = [];
+              let intermediateChops = false;
+
+
+              for (let j = i + 1; j < lengthOfWay; j++) {
+
+                if (this.field[way[j]].checker !== 0) break;
+
+                const hangman = queen; // шашка, которая рубит
+                const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                const victim = way[i]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
+                intermediateWays.push(move);
+
+                this.waysOfCells[way[j]].forEach(way2 => {
+
+                  if (way2.indexOf(queen) === -1) {
+
+                    const indexOfEmptyCell = way2.indexOf(way[j]);
+                    const lengthOfWay2 = way2.length;
+
+                    let isIntermediateChops = false;
+
+                    for (let k = indexOfEmptyCell + 1; k < lengthOfWay2; k++) {
+
+                      if (this.field[way2[k]].checker === 2) break;
+                      if (this.field[way2[k]].checker === 1 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker !== 0) break;
+
+                      if (this.field[way2[k]].checker === 1 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker === 0) {
+
+                        intermediateChops = true;
+                        isIntermediateChops = true;
+                        const hangman = queen; // шашка, которая рубит
+                        const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                        const victim = way[i]; // шашка, которую рубят
+                        const move = [hangman, newHangmanPlace, victim];
+                        this.field.moves.push(move);
+
+                        break;
+
+                      }
+
+                    }
+                    if (!isIntermediateChops) {
+                      
+                      for (let k = indexOfEmptyCell - 1; k >= 0; k--) {
+
+                        if (this.field[way2[k]].checker === 2) break;
+                        if (this.field[way2[k]].checker === 1 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker !== 0) break;
+
+                        if (this.field[way2[k]].checker === 1 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker === 0) {
+
+                          intermediateChops = true;
+                          const hangman = queen; // шашка, которая рубит
+                          const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                          const victim = way[i]; // шашка, которую рубят
+                          const move = [hangman, newHangmanPlace, victim];
+                          this.field.moves.push(move);
+
+                          break;
+
+                        }
+
+                      }
+                    }
+
+                  }
+
+                });
+
+              }
+
+              if (!intermediateChops) {
+
+                this.field.moves = this.field.moves.concat(intermediateWays);
+
+              }
+
+            }
+
+          }
+
+          for (let i = indexOfQueen - 1; i >= 0; i--) {
+
+            if (this.field[way[i]].checker === 2) break;
+            if (this.field[way[i]].checker === 1 && this.field[way[i - 1]] && this.field[way[i - 1]].checker !== 0) break;
+
+            if (this.field[way[i]].checker === 1 && this.field[way[i - 1]] && this.field[way[i - 1]].checker === 0) {
+
+              this.field.chops = true;
+              const intermediateWays = [];
+              let intermediateChops = false;
+
+
+              for (let j = i - 1; j >= 0; j--) {
+
+                if (this.field[way[j]].checker !== 0) break;
+
+                const hangman = queen; // шашка, которая рубит
+                const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                const victim = way[i]; // шашка, которую рубят
+                const move = [hangman, newHangmanPlace, victim];
+                intermediateWays.push(move);
+
+                this.waysOfCells[way[j]].forEach(way2 => {
+
+                  if (way2.indexOf(queen) === -1) {
+
+                    const indexOfEmptyCell = way2.indexOf(way[j]);
+                    const lengthOfWay2 = way2.length;
+
+                    let isIntermediateChops = false;
+
+                    for (let k = indexOfEmptyCell + 1; k < lengthOfWay2; k++) {
+
+                      if (this.field[way2[k]].checker === 2) break;
+                      if (this.field[way2[k]].checker === 1 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker !== 0) break;
+
+                      if (this.field[way2[k]].checker === 1 && this.field[way2[k + 1]] && this.field[way2[k + 1]].checker === 0) {
+
+                        intermediateChops = true;
+                        isIntermediateChops = true;
+                        const hangman = queen; // шашка, которая рубит
+                        const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                        const victim = way[i]; // шашка, которую рубят
+                        const move = [hangman, newHangmanPlace, victim];
+                        this.field.moves.push(move);
+
+                        break;
+
+                      }
+
+                    }
+                    if (!isIntermediateChops) {
+                      
+                      for (let k = indexOfEmptyCell - 1; k >= 0; k--) {
+
+                        if (this.field[way2[k]].checker === 2) break;
+                        if (this.field[way2[k]].checker === 1 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker !== 0) break;
+
+                        if (this.field[way2[k]].checker === 1 && this.field[way2[k - 1]] && this.field[way2[k - 1]].checker === 0) {
+
+                          intermediateChops = true;
+                          const hangman = queen; // шашка, которая рубит
+                          const newHangmanPlace = [way[j]]; // место, куда встает шашка после сруба
+                          const victim = way[i]; // шашка, которую рубят
+                          const move = [hangman, newHangmanPlace, victim];
+                          this.field.moves.push(move);
+
+                          break;
+
+                        }
+
+                      }
+                    }
+
+                  }
+
+                });
+
+              }
+
+              if (!intermediateChops) {
+
+                this.field.moves = this.field.moves.concat(intermediateWays);
+
+              }
+
+            }
+
+          }
+
+        }
+
+
+      });
+
+    });
   }
 
   addQueen(cell) {
@@ -383,6 +761,10 @@ module.exports = class Checkers {
 						this.checkMoves();
 					
           }
+
+          console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||');
+          console.log('****************************');
+          console.log(this.field.moves);
           done();
         }
       });
