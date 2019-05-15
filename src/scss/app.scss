@@ -62,3 +62,33 @@
   left: 10%;
   cursor: pointer;
 }
+.whoseWin-popup-wrap {
+  background-color: rgba(0,0,0,.5);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.whoseWin-popup {
+  max-width: 320px;
+  margin: 0 auto;
+  margin-top: 5%;
+  background-color: rgba(0,0,0,.5);
+  text-align: center;
+  color: #fff;
+  padding: 20px;
+  padding-bottom: 40px;
+}
+.btn {
+  border: 1px solid white;
+  color: #fff;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 10px 20px;
+  transition: all .3s;
+}
+.btn:hover {
+  color: #333;
+  background-color: #fff;
+}

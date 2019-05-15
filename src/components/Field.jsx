@@ -14,6 +14,7 @@ function Field(props) {
         <li>2</li>
         <li>1</li>
       </ul>
+
       <ul className='field-ul'>
         {props.field.cells.map((cell, i) => 
           <CellContainer key={i} cell={cell} />
@@ -31,6 +32,21 @@ function Field(props) {
           <li>g</li>
           <li>h</li>
       </ul>
+
+        {
+          (props.field.whoseWin !== 0 && props.field.whoseWin !== undefined)
+          ?
+          <div className="whoseWin-popup-wrap ">
+                <div className="whoseWin-popup">
+                  <h2>Победили {props.field.whoseWin === 1 ? 'белые' : props.field.whoseWin === 2 ? 'черные' : ''}</h2>
+                  <form action="">
+                    <button id="new-game" className='btn'>Играть снова</button>
+                  </form>
+                </div>
+          </div>
+          :
+          ''       
+        }
     </section>
   );
 }

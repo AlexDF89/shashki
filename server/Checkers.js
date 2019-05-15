@@ -8,6 +8,7 @@ module.exports = class Checkers {
     this.field.gameID = ++idOfLastGame;
 
     this.field.queens = [];
+    this.field.whoseWin = 0;
 
     this.ways = {
       GoldWay:       ['a1', 'b2', 'c3', 'd4', 'e5', 'f6', 'g7', 'h8'],
@@ -762,7 +763,11 @@ module.exports = class Checkers {
             this.checkChopsOfQueens(this.field.queens);
 
             this.checkMovesOfQueens();
-						this.checkMoves();
+            this.checkMoves();
+            
+            if (this.field.moves[0] === undefined) {
+              this.field.whoseWin = this.field.whoseMove === 1 ? this.field.whoseMove = 2 : this.field.whoseMove = 1;
+            }
 					
           }
 

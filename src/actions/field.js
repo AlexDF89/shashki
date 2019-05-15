@@ -51,6 +51,7 @@ export function handleDrop(drop) {
           field: {
             gameID: origField.gameID,
             whoseMove: origField.whoseMove,
+            whoseWin: origField.whoseWin,
             moves: origField.moves,
             cells
           }
