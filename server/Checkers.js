@@ -1,14 +1,14 @@
 
-let idOfLastGame = -1;
 module.exports = class Checkers {
   constructor() {
     this.field = {};
     this.field.whoseMove = 1; // 1 - белые, 2 - черные
 
-    this.field.gameID = ++idOfLastGame;
-
     this.field.queens = [];
     this.field.whoseWin = 0;
+
+    this.user1 = null;
+    this.user2 = null;
 
     this.ways = {
       GoldWay:       ['a1', 'b2', 'c3', 'd4', 'e5', 'f6', 'g7', 'h8'],
@@ -709,74 +709,75 @@ module.exports = class Checkers {
     this.field.queens.splice(index, 1);
   }
 
-  handleMove(checkers, done) {
+  handleMove(cells, userID, done) {
     this.field.moves.forEach((move, i) => {
-      move[1].forEach(oneMove => {
-        if (move[0] === checkers[0] && oneMove === checkers[1]) {
 
-          this.field[move[0]].checker = 0;
-          this.field[oneMove].checker = this.field.whoseMove;
+      if ((this.field.whoseMove === 1 && this.user1 === userID) || (this.field.whoseMove === 2 && this.user2 === userID)) {
 
-          if (this.field[move[0]].queen) {
-            this.field[oneMove].queen = true;
-            this.addQueen(oneMove);
-            this.field[move[0]].queen = false;
-            this.removeQueen(move[0]);
-          }
-
+        move[1].forEach(oneMove => {
+          if (move[0] === cells[0] && oneMove === cells[1]) {
   
-          // если ходит первый игрок и шашка стала на восьмую диагональ или если ходит второй игрок и шашка встала на первую диагональ, сделать шашку дамкой
-          if ((this.field.whoseMove === 1 && oneMove[1] === '8') || (this.field.whoseMove === 2 && oneMove[1] === '1')) {
-            this.field[oneMove].queen = true;
-            if (this.field.queens.indexOf(oneMove) === -1) {
-              this.field.queens.push(oneMove);
-            }
-          }
+            this.field[move[0]].checker = 0;
+            this.field[oneMove].checker = this.field.whoseMove;
   
-          // если move[2] существует, то значит этот ход является срубом
-          if (this.field[move[2]]) {
-            this.field[move[2]].checker = 0;
-            this.field[move[2]].queen = false;
-            const indexQueen = this.field.queens.indexOf(move[2]);
-            if (indexQueen !== -1) {
-              this.field.queens.splice(indexQueen, 1);
+            if (this.field[move[0]].queen) {
+              this.field[oneMove].queen = true;
+              this.addQueen(oneMove);
+              this.field[move[0]].queen = false;
+              this.removeQueen(move[0]);
             }
-
-            this.field.moves = [];
-            if (this.field[oneMove].queen) {
-              this.checkAdditionalChopsOfQueen(oneMove);
-            } else {
-              this.checkAdditionalChops(oneMove);
-            }
-            if (this.field.moves[0]) {
-              done();
-            } else {
-              this.field.chops = false;
-            }
-          }
   
-          if (this.field.chops === false) {
-            this.field.whoseMove === 1 ? this.field.whoseMove = 2 : this.field.whoseMove = 1;
-            this.field.moves = [];
-
-            this.checkChops();
-            this.checkChopsOfQueens(this.field.queens);
-
-            this.checkMovesOfQueens();
-            this.checkMoves();
+    
+            // если ходит первый игрок и шашка стала на восьмую диагональ или если ходит второй игрок и шашка встала на первую диагональ, сделать шашку дамкой
+            if ((this.field.whoseMove === 1 && oneMove[1] === '8') || (this.field.whoseMove === 2 && oneMove[1] === '1')) {
+              this.field[oneMove].queen = true;
+              if (this.field.queens.indexOf(oneMove) === -1) {
+                this.field.queens.push(oneMove);
+              }
+            }
+    
+            // если move[2] существует, то значит этот ход является срубом
+            if (this.field[move[2]]) {
+              this.field[move[2]].checker = 0;
+              this.field[move[2]].queen = false;
+              const indexQueen = this.field.queens.indexOf(move[2]);
+              if (indexQueen !== -1) {
+                this.field.queens.splice(indexQueen, 1);
+              }
+  
+              this.field.moves = [];
+              if (this.field[oneMove].queen) {
+                this.checkAdditionalChopsOfQueen(oneMove);
+              } else {
+                this.checkAdditionalChops(oneMove);
+              }
+              if (this.field.moves[0]) {
+                done();
+              } else {
+                this.field.chops = false;
+              }
+            }
+    
+            if (this.field.chops === false) {
+              this.field.whoseMove === 1 ? this.field.whoseMove = 2 : this.field.whoseMove = 1;
+              this.field.moves = [];
+  
+              this.checkChops();
+              this.checkChopsOfQueens(this.field.queens);
+  
+              this.checkMovesOfQueens();
+              this.checkMoves();
+              
+              if (this.field.moves[0] === undefined) {
+                this.field.whoseWin = this.field.whoseMove === 1 ? this.field.whoseMove = 2 : this.field.whoseMove = 1;
+              }
             
-            if (this.field.moves[0] === undefined) {
-              this.field.whoseWin = this.field.whoseMove === 1 ? this.field.whoseMove = 2 : this.field.whoseMove = 1;
             }
-					
+  
+            done();
           }
-
-          console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||');
-          console.log('****************************');
-          console.log(this.field.moves);
-          done();
-        }
-      });
+        });
+      }
     });
   }
 

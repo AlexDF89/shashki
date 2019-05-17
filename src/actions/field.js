@@ -1,4 +1,6 @@
-import axios from 'axios';
+import socket from '../js/socket';
+
+import store from '../store';
 
 export const GET_FIELD = 'GET_FIELD';
 export const HANDLE_DROP = 'HANDLE_DROP';
@@ -15,48 +17,67 @@ let cellsArr = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
 
 export function getField() {
   return dispatch => {
-    return axios.get('api/getField')
-      .then(response => response.data)
-      .then(origField => {
-        const cells = cellsArr.map(cell => {
-          if (origField[cell]) return origField[cell];
-          return cell;
-        });
-        return dispatch({
-          type: GET_FIELD,
-          field: {
-            gameID: origField.gameID,
-            whoseMove: origField.whoseMove,
-            moves: origField.moves,
-            cells
-          }
-        })
-      })
-      .catch(err => console.error(err.message));
+    var data = window
+    .location
+    .search
+    .replace('?','')
+    .split('&')
+    .reduce(
+        function(p,e){
+            var a = e.split('=');
+            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+            return p;
+        },
+        {}
+    );
+    socket.emit('getField', data['id']);
+
+    socket.on('setField', origField => {
+
+      const cells = cellsArr.map(cell => {
+        if (origField[cell]) return origField[cell];
+        return cell;
+      });
+
+      return dispatch({
+        type: GET_FIELD,
+        field: {
+          gameID: origField.gameID,
+          whoseMove: origField.whoseMove,
+          moves: origField.moves,
+          cells
+        }
+      });
+
+    });
   }
 }
 
 export function handleDrop(drop) {
   const data = [drop[0], drop[1], drop[2]];
   return dispatch => {
-    return axios.post('api/handleDrop', data)
-      .then(response => response.data)
-      .then(origField => {
-        const cells = cellsArr.map(cell => {
-          if (origField[cell]) return origField[cell];
-          return cell;
-        });
-        return dispatch({
-          type: HANDLE_DROP,
-          field: {
-            gameID: origField.gameID,
-            whoseMove: origField.whoseMove,
-            whoseWin: origField.whoseWin,
-            moves: origField.moves,
-            cells
-          }
-       })
-      })
-      .catch(err => console.error(err.message));
+
+    socket.emit('handleDrop', data);
+
   }
 }
+
+socket.on('processedDrop', origField => {
+
+  const cells = cellsArr.map(cell => {
+    if (origField[cell]) return origField[cell];
+    return cell;
+  });
+
+  return store.dispatch({
+    type: HANDLE_DROP,
+    field: {
+      gameID: origField.gameID,
+      whoseMove: origField.whoseMove,
+      whoseWin: origField.whoseWin,
+      moves: origField.moves,
+      cells
+    }
+ });
+
+});

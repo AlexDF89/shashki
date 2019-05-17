@@ -33,6 +33,12 @@ function Field(props) {
           <li>h</li>
       </ul>
 
+      <div className="connectingLink-wrap">
+          <p>Для подключения к игре ваш противник должен перейти п оссылке:</p>
+          <p id="connectingLink">{`${window.location.host}/?id=${props.field.gameID}`}</p>
+          <button onClick={1}>Скопировать</button>
+      </div>
+
         {
           (props.field.whoseWin !== 0 && props.field.whoseWin !== undefined)
           ?

@@ -1,25 +1,59 @@
 const express = require('express');
 const app = express();
+const server = require('http').Server(app);
 const bodyParser = require('body-parser');
+const io = require('socket.io')(server);
+const crypto = require('crypto');
+
 app.use(bodyParser.json());
 
 const Checkers = require( './server/Checkers');
 
-const games = [];
+const games = {};
 
-app.get('/api/getField', (req, res) => {
-  const checkers = new Checkers();
-  games.push(checkers);
-  res.set('Content-Type', 'application/json; charset: utf-8');
-  res.end(JSON.stringify(checkers.field));
-});
+io.on('connection', socket => {
 
-app.post('/api/handleDrop', (req, res) => {
+  socket.on('getField', room => {
 
-  games[req.body[2]].handleMove(req.body[0], function() {
-    res.end(JSON.stringify(games[req.body[2]].field));
+    if (io.sockets.adapter.rooms[room]) {
+
+      socket.join(room);
+      console.log('user2 connected to room:', room);
+
+      if (games[room].user2 === null) games[room].user2 = socket.id;
+
+      return socket.emit('setField', games[room].field);
+
+    } else {
+
+      const checkers = new Checkers();
+      const id = crypto.randomBytes(20).toString('hex');
+
+      checkers.field.gameID = id;
+      checkers.user1 = socket.id;
+      console.log('user1 connected to room:', checkers.field.gameID);
+      games[id] = checkers;
+      socket.join(id);
+
+      return socket.emit('setField', checkers.field);
+
+    }
+
+
   });
 
+  socket.on('handleDrop', data => {
+
+    const move = data[0];
+    const gameID = data[2];
+    const userID = socket.id;
+
+    games[gameID].handleMove(move, userID, function() {
+      return io.sockets.to(gameID).emit('processedDrop', games[gameID].field);
+    });
+
+  })
+
 });
 
-app.listen(3001, console.log('Сервер работает на порту 3001'));
+server.listen(3001, console.log('Сервер работает на порту 3001'));

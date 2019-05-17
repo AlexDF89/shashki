@@ -6,6 +6,7 @@ import { DragDropContext } from 'react-dnd';
 import FieldContainer from './containers/FieldContainer';
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">

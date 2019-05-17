@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import Field from '../components/Field';
+import { copyLink } from '../actions';
 
 function mapStateToProps(state) {
   return {
@@ -10,7 +11,7 @@ function mapStateToProps(state) {
 
 // function mapDispatchToProps(dispatch) {
 //   return {
-//     onSetField: field => dispatch(setField(field))
+//     onCopyLink: () => dispatch(copyLink())
 //   }
 // }
 
