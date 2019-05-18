@@ -29,10 +29,10 @@ const boardSquareTarget = {
   },
   drop(props, monitor, component) {
 
-    props.field.moves.forEach(elem => {
+    props.data.field.moves.forEach(elem => {
 
       if ((elem[0] === monitor.getItem().coordinate) && (elem[1].indexOf(props.cell.coordinate) !== -1)) {
-        props.onHandleDrop([[monitor.getItem().coordinate, props.cell.coordinate], props.field.moves, props.field.gameID]);
+        props.onHandleDrop([[monitor.getItem().coordinate, props.cell.coordinate], props.data.field.moves, props.data.field.gameID]);
       }
     });
 
@@ -54,7 +54,7 @@ function Cell(props) {
               (props.cell.checker === 1 ? ' white-checker' : '') + 
               (props.cell.checker === 2 ? ' black-checker' : '')
             )
-          }
+					}
         `}>
         {props.cell.checker === 1 ? !props.cell.queen ? <CheckerContainer checker={props.cell} src={WChecker} /> : <CheckerContainer checker={props.cell} src={WQChecker} /> : '' }
         {props.cell.checker === 2 ? !props.cell.queen ? <CheckerContainer checker={props.cell} src={BChecker} /> : <CheckerContainer checker={props.cell} src={BQChecker} /> : ''}

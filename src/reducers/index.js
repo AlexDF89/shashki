@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import { default as field } from './field';
+import { default as data } from './field';
 import {default as checker} from './checker';
 import {default as cell} from './cell';
 
 const reducer = combineReducers({
-  field,
+  data,
   checker,
   cell
 });

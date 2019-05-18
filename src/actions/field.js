@@ -13,7 +13,9 @@ let cellsArr = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
               'a3', 'b3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3', 
               'a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2', 
               'a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1', 
-            ]
+						]
+						
+let user = 0;
 
 export function getField() {
   return dispatch => {
@@ -32,21 +34,26 @@ export function getField() {
     );
     socket.emit('getField', data['id']);
 
-    socket.on('setField', origField => {
+    socket.on('setField', obj => {
 
       const cells = cellsArr.map(cell => {
-        if (origField[cell]) return origField[cell];
+        if (obj.field[cell]) return obj.field[cell];
         return cell;
       });
 
+			user = obj.user;
+
       return dispatch({
-        type: GET_FIELD,
-        field: {
-          gameID: origField.gameID,
-          whoseMove: origField.whoseMove,
-          moves: origField.moves,
-          cells
-        }
+				type: GET_FIELD,
+				data: {
+					user: user,
+					field: {
+						gameID: obj.field.gameID,
+						whoseMove: obj.field.whoseMove,
+						moves: obj.field.moves,
+						cells
+					}
+				}
       });
 
     });
@@ -62,22 +69,25 @@ export function handleDrop(drop) {
   }
 }
 
-socket.on('processedDrop', origField => {
+socket.on('processedDrop', obj => {
 
   const cells = cellsArr.map(cell => {
-    if (origField[cell]) return origField[cell];
+    if (obj.field[cell]) return obj.field[cell];
     return cell;
   });
 
   return store.dispatch({
-    type: HANDLE_DROP,
-    field: {
-      gameID: origField.gameID,
-      whoseMove: origField.whoseMove,
-      whoseWin: origField.whoseWin,
-      moves: origField.moves,
-      cells
-    }
+		type: HANDLE_DROP,
+		data: {
+			user: user,
+			field: {
+				gameID: obj.field.gameID,
+				whoseMove: obj.field.whoseMove,
+				whoseWin: obj.field.whoseWin,
+				moves: obj.field.moves,
+				cells
+			}
+		}
  });
 
 });

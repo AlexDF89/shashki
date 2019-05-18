@@ -18,11 +18,10 @@ io.on('connection', socket => {
     if (io.sockets.adapter.rooms[room]) {
 
       socket.join(room);
-      console.log('user2 connected to room:', room);
 
       if (games[room].user2 === null) games[room].user2 = socket.id;
 
-      return socket.emit('setField', games[room].field);
+      return socket.emit('setField', {user: 2, field: games[room].field});
 
     } else {
 
@@ -31,11 +30,10 @@ io.on('connection', socket => {
 
       checkers.field.gameID = id;
       checkers.user1 = socket.id;
-      console.log('user1 connected to room:', checkers.field.gameID);
       games[id] = checkers;
       socket.join(id);
 
-      return socket.emit('setField', checkers.field);
+      return socket.emit('setField', {user: 1, field: checkers.field});
 
     }
 
@@ -49,7 +47,7 @@ io.on('connection', socket => {
     const userID = socket.id;
 
     games[gameID].handleMove(move, userID, function() {
-      return io.sockets.to(gameID).emit('processedDrop', games[gameID].field);
+      return io.sockets.to(gameID).emit('processedDrop', {user: 0, field: games[gameID].field});
     });
 
   })

@@ -5,7 +5,7 @@ import { copyLink } from '../actions';
 
 function mapStateToProps(state) {
   return {
-    field: state.field
+    data: state.data
   }
 }
 

@@ -29,6 +29,9 @@
   flex: 1;
   text-align: center;
 }
+.rotate180 {
+	transform: rotate(180deg);
+}
 .field-ul {
   flex-basis: 90%;
   display: flex;
