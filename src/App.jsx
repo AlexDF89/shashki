@@ -3,6 +3,8 @@ import './scss/app.scss';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 
+import './js/script';
+
 import FieldContainer from './containers/FieldContainer';
 
 class App extends Component {

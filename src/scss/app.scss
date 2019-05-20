@@ -19,7 +19,7 @@
   padding-top: 30%;
 }
 .markup-chars {
-  flex-basis: 100%;
+  flex-basis: 95%;
   display: flex;
   list-style-type: none;
   margin: 0;
@@ -33,13 +33,12 @@
 	transform: rotate(180deg);
 }
 .field-ul {
-  flex-basis: 90%;
+  flex-basis: 85%;
   display: flex;
   flex-wrap: wrap;
   margin: 0;
   padding: 0;
 }
-
 .field-li {
   list-style-type: none;
   box-sizing: border-box;
@@ -64,6 +63,54 @@
   top: 10%;
   left: 10%;
   cursor: pointer;
+}
+.game-info {
+  font-size: 18px;
+  margin-top: 30px;
+  border-radius: 3px;
+  border: 1px solid #f1f1f1;
+}
+.colors {
+  background-color: #f1f1f1;
+  overflow: hidden;
+  padding: 3px 10px;
+}
+.user-color {
+  float: left;
+}
+.user-color span {
+  font-weight: bold;
+}
+.whoseMove {
+  float: right;
+  width: 100px;
+}
+.whoseMove span {
+  font-weight: bold;
+}
+.connectingLink-wrap {
+  overflow: hidden;
+  clear: both;
+  padding: 3px 10px;
+}
+.connectingLink {
+  padding: 8px 10px;
+  color: #333;
+  border-radius: 5px;
+  background-color: #aaa;
+}
+.connectingLink-message {
+  overflow: hidden;
+}
+.connectingLink-message span {
+  font-size: 16px;
+  color: #333;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #aaa;
+  margin-top: -40px;
+  display: block;
+  transition: all .5s;
 }
 .whoseWin-popup-wrap {
   background-color: rgba(0,0,0,.5);
@@ -94,4 +141,17 @@
 .btn:hover {
   color: #333;
   background-color: #fff;
+}
+.btn-copy {
+  color: #fff;
+  cursor: pointer;
+  background-color: #d37e19;
+  padding: 10px 20px;
+  transition: all .3s;
+  border: none;
+  border-radius: 3px;
+
+}
+.btn-copy:hover {
+  background-color: #bc6702;
 }

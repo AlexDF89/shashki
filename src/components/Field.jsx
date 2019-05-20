@@ -73,31 +73,38 @@ function Field(props) {
 				''					
 			}
 
+			<div className="game-info">
+				<div className="colors">
+					<div className="user-color">
+						<p>Вы играете <span>{props.data.user === 1 ? 'белыми' : props.data.user === 2 ? 'черными' : ''}</span></p>
+					</div>
 
-			<div className="user-color">
-				<p>Вы играете {props.data.user === 1 ? 'белыми' : props.data.user === 2 ? 'черными' : ''}</p>
+					<div className="whoseMove">
+						<p>Ход <span>{props.data.field.whoseMove === 1 ? 'белых' : 'черных'}</span></p>
+					</div>
+				</div>
+				<div className="connectingLink-wrap">
+						<p>Для подключения к игре ваш противник должен перейти по ссылке:</p>
+						<p id="connectingLink" className="connectingLink">{`${window.location.host}/?id=${props.data.field.gameID}`}</p>
+						<button id="btn-copy" className="btn-copy">Скопировать</button>
+						<p className="connectingLink-message"><span id="connectingLink-message">Ссылка скопирована в буфер обмена</span></p>
+				</div>
+
+					{
+						(props.data.field.whoseWin !== 0 && props.data.field.whoseWin !== undefined)
+						?
+						<div className="whoseWin-popup-wrap ">
+									<div className="whoseWin-popup">
+										<h2>Победили {props.data.field.whoseWin === 1 ? 'белые' : props.data.field.whoseWin === 2 ? 'черные' : ''}</h2>
+										<form action="">
+											<button id="new-game" className='btn'>Играть снова</button>
+										</form>
+									</div>
+						</div>
+						:
+						''       
+					}
 			</div>
-
-      <div className="connectingLink-wrap">
-          <p>Для подключения к игре ваш противник должен перейти п оссылке:</p>
-          <p id="connectingLink">{`${window.location.host}/?id=${props.data.field.gameID}`}</p>
-          <button onClick={1}>Скопировать</button>
-      </div>
-
-        {
-          (props.data.field.whoseWin !== 0 && props.data.field.whoseWin !== undefined)
-          ?
-          <div className="whoseWin-popup-wrap ">
-                <div className="whoseWin-popup">
-                  <h2>Победили {props.data.field.whoseWin === 1 ? 'белые' : props.data.field.whoseWin === 2 ? 'черные' : ''}</h2>
-                  <form action="">
-                    <button id="new-game" className='btn'>Играть снова</button>
-                  </form>
-                </div>
-          </div>
-          :
-          ''       
-        }
     </section>
   );
 }
