@@ -60,14 +60,14 @@ function Field(props) {
 				?
 					<ul className="markup-chars">
 							<li></li>
-							<li>a</li>
-							<li>b</li>
-							<li>c</li>
-							<li>d</li>
-							<li>e</li>
-							<li>f</li>
-							<li>g</li>
 							<li>h</li>
+							<li>g</li>
+							<li>f</li>
+							<li>e</li>
+							<li>d</li>
+							<li>c</li>
+							<li>b</li>
+							<li>a</li>
 					</ul>
 				:
 				''					
