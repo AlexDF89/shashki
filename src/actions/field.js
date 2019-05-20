@@ -61,10 +61,9 @@ export function getField() {
 }
 
 export function handleDrop(drop) {
-  const data = [drop[0], drop[1], drop[2]];
   return dispatch => {
 
-    socket.emit('handleDrop', data);
+    socket.emit('handleDrop', drop);
 
   }
 }

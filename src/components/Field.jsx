@@ -1,8 +1,7 @@
 import React from 'react';
-import CellContainer from '../containers/CellContainer';
+import Cell from '../components/Cell';
 
 function Field(props) {
-	console.log(props)
   return (
     <section className='field-wrap'>
 			{
@@ -38,7 +37,7 @@ function Field(props) {
 
       <ul className={`field-ul ${props.data.user === 2 ? 'rotate180' : ''}`}>
         {props.data.field.cells.map((cell, i) => 
-          <CellContainer key={i} cell={cell} />
+          <Cell key={i} cell={cell} data={props.data} handleDrop={props.onHandleDrop} />
         )}
       </ul>
 

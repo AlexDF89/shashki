@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 
-import CheckerContainer from '../containers/CheckerContainer';
+import Checker from '../components/Checker';
 import WChecker from '../images/w.png';
 import WQChecker from '../images/wq.png';
 
@@ -32,7 +32,14 @@ const boardSquareTarget = {
     props.data.field.moves.forEach(elem => {
 
       if ((elem[0] === monitor.getItem().coordinate) && (elem[1].indexOf(props.cell.coordinate) !== -1)) {
-        props.onHandleDrop([[monitor.getItem().coordinate, props.cell.coordinate], props.data.field.moves, props.data.field.gameID]);
+
+        const move = [monitor.getItem().coordinate, props.cell.coordinate];
+        const gameID = props.data.field.gameID;
+
+        props.handleDrop( {
+          move, 
+          gameID
+        });
       }
     });
 
@@ -56,8 +63,8 @@ function Cell(props) {
             )
 					}
         `}>
-        {props.cell.checker === 1 ? !props.cell.queen ? <CheckerContainer checker={props.cell} src={WChecker} /> : <CheckerContainer checker={props.cell} src={WQChecker} /> : '' }
-        {props.cell.checker === 2 ? !props.cell.queen ? <CheckerContainer checker={props.cell} src={BChecker} /> : <CheckerContainer checker={props.cell} src={BQChecker} /> : ''}
+        {props.cell.checker === 1 ? !props.cell.queen ? <Checker checker={props.cell} src={WChecker} /> : <Checker checker={props.cell} src={WQChecker} /> : '' }
+        {props.cell.checker === 2 ? !props.cell.queen ? <Checker checker={props.cell} src={BChecker} /> : <Checker checker={props.cell} src={BQChecker} /> : ''}
       </div>
     </li>
   );

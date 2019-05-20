@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Field from '../components/Field';
-import { copyLink } from '../actions';
+import { copyLink, handleDrop } from '../actions';
 
 function mapStateToProps(state) {
   return {
@@ -9,12 +9,13 @@ function mapStateToProps(state) {
   }
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     onCopyLink: () => dispatch(copyLink())
-//   }
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    //onCopyLink: () => dispatch(copyLink()),
+    onHandleDrop: drop => dispatch(handleDrop(drop))
+  }
+}
 
-const FieldContainer = connect(mapStateToProps, null)(Field);
+const FieldContainer = connect(mapStateToProps, mapDispatchToProps)(Field);
 
 export default FieldContainer;

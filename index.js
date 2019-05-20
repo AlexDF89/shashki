@@ -42,8 +42,8 @@ io.on('connection', socket => {
 
   socket.on('handleDrop', data => {
 
-    const move = data[0];
-    const gameID = data[2];
+    const move = data.move;
+    const gameID = data.gameID;
     const userID = socket.id;
 
     games[gameID].handleMove(move, userID, function() {
