@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Field from '../components/Field';
-import { copyLink, handleDrop } from '../actions';
+import { handleDrop, highlightTargets } from '../actions';
 
 function mapStateToProps(state) {
   return {
@@ -11,8 +11,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    //onCopyLink: () => dispatch(copyLink()),
-    onHandleDrop: drop => dispatch(handleDrop(drop))
+    onHandleDrop: drop => dispatch(handleDrop(drop)),
+    onHighlightTargets: (checker, data, extinguishTargets) => dispatch(highlightTargets(checker, data, extinguishTargets))
   }
 }
 

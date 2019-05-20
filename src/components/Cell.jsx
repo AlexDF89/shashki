@@ -11,7 +11,7 @@ import BQChecker from '../images/bq.png';
 function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
-    hocered: monitor.isOver(),
+    hovered: monitor.isOver(),
     checker: monitor.getItem()
   }
 }
@@ -51,7 +51,7 @@ function Cell(props) {
   const { connectDropTarget, hovered, checker } = props;
 
   return connectDropTarget(
-    <li className='field-li'>
+    <li className={`field-li ${props.data.user === 2 ? 'rotate180' : ''}`}>
       <div className=
         {`field-li-in
           ${typeof props.cell === 'string' ? 'white-cell' 
@@ -61,10 +61,11 @@ function Cell(props) {
               (props.cell.checker === 1 ? ' white-checker' : '') + 
               (props.cell.checker === 2 ? ' black-checker' : '')
             )
-					}
+          }
+          ${props.cell.highlight ? 'field-li-in-highlight' : ''}
         `}>
-        {props.cell.checker === 1 ? !props.cell.queen ? <Checker checker={props.cell} src={WChecker} /> : <Checker checker={props.cell} src={WQChecker} /> : '' }
-        {props.cell.checker === 2 ? !props.cell.queen ? <Checker checker={props.cell} src={BChecker} /> : <Checker checker={props.cell} src={BQChecker} /> : ''}
+        {props.cell.checker === 1 ? !props.cell.queen ? <Checker checker={props.cell} src={WChecker}  data={props.data} highlightTargets={props.onHighlightTargets} /> : <Checker checker={props.cell}  data={props.data} src={WQChecker} highlightTargets={props.onHighlightTargets} /> : '' }
+        {props.cell.checker === 2 ? !props.cell.queen ? <Checker checker={props.cell} src={BChecker}  data={props.data} highlightTargets={props.onHighlightTargets} /> : <Checker checker={props.cell}  data={props.data} src={BQChecker} highlightTargets={props.onHighlightTargets} /> : ''}
       </div>
     </li>
   );

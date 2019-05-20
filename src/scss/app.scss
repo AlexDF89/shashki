@@ -57,6 +57,19 @@
 .white-cell {
   background-color: #eeeed2;
 }
+.field-li-in-highlight::before {
+  content: '';
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  margin-top: -5px;
+  border-radius: 50%;
+  border: 2px solid #666;
+  position: absolute;
+  box-sizing: border-box;
+}
 .field-img {
   position: absolute;
   width: 80%;

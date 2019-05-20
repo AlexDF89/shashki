@@ -4,9 +4,13 @@ import { DragSource } from 'react-dnd';
 
 const checkerSource = {
   beginDrag(props, monitor, component) {
+
+    props.highlightTargets(props.checker, props.data);
     return props.checker;
+
   },
   endDrag(props, monitor, component) {
+    props.highlightTargets(props.checker, props.data, true);
     if (!monitor.didDrop()) return;
   }
 }
@@ -20,8 +24,10 @@ function collect(connect, monitor) {
 }
 
 function Checker(props) {
+
   const { isDragging, connectDragSource, checker } = props;
   const opacity = isDragging ? 0 : 1;
+
   return connectDragSource(
     <img style={{opacity}} className='field-img' src={props.src} alt='' />
   );

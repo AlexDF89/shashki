@@ -4,6 +4,7 @@ import store from '../store';
 
 export const GET_FIELD = 'GET_FIELD';
 export const HANDLE_DROP = 'HANDLE_DROP';
+export const HIGHLIGHT_TARGETS = 'HIGHLIGHT_TARGETS';
 
 let cellsArr = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
               'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7',
@@ -90,3 +91,37 @@ socket.on('processedDrop', obj => {
  });
 
 });
+
+export function highlightTargets(checker, data, extinguishTargets) {
+  const highlightCells = {};
+
+  data.field.moves.forEach(move => {
+    if (checker.coordinate === move[0]) {
+      highlightCells[move[1][0]] = move[1][0];
+    }
+  });
+
+  const newData = {};
+  newData.field = {};
+
+  newData.field.cells = data.field.cells.map(cell => {
+
+    if (!extinguishTargets && typeof cell === 'object' && cell.coordinate === highlightCells[cell.coordinate]) {
+      cell.highlight = true;
+    } else if (typeof cell === 'object') {
+      cell.highlight = false;
+    }
+    return cell;
+
+  });
+
+  newData.user = data.user;
+  newData.field.gameID = data.field.gameID;
+  newData.field.whoseMove = data.field.whoseMove;
+  newData.field.moves = Array.prototype.concat([], data.field.moves);
+
+  return store.dispatch({
+    type: HIGHLIGHT_TARGETS,
+    data: newData
+  });
+}

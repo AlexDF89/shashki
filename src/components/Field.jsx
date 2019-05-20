@@ -37,7 +37,7 @@ function Field(props) {
 
       <ul className={`field-ul ${props.data.user === 2 ? 'rotate180' : ''}`}>
         {props.data.field.cells.map((cell, i) => 
-          <Cell key={i} cell={cell} data={props.data} handleDrop={props.onHandleDrop} />
+          <Cell key={i} cell={cell} data={props.data} handleDrop={props.onHandleDrop} onHighlightTargets={props.onHighlightTargets} />
         )}
       </ul>
 

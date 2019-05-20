@@ -1,1 +1,1 @@
-export { GET_FIELD, HANDLE_DROP, getField, handleDrop } from './field';
+export { GET_FIELD, HANDLE_DROP, HIGHLIGHT_TARGETS, getField, handleDrop, highlightTargets } from './field';
