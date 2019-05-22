@@ -62,11 +62,13 @@ export function getField() {
 }
 
 export function handleDrop(drop) {
+
   return dispatch => {
 
     socket.emit('handleDrop', drop);
 
   }
+  
 }
 
 socket.on('processedDrop', obj => {

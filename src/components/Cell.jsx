@@ -38,7 +38,7 @@ const boardSquareTarget = {
 
         props.handleDrop( {
           move, 
-          gameID
+          gameID,
         });
       }
     });

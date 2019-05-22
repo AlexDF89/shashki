@@ -26,7 +26,7 @@ function collect(connect, monitor) {
 function Checker(props) {
 
   const { isDragging, connectDragSource, checker } = props;
-  const opacity = isDragging ? 0 : 1;
+  const opacity = isDragging ? .5 : 1;
 
   return connectDragSource(
     <img style={{opacity}} className='field-img' src={props.src} alt='' />
