@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 
 });
 
-app.get(/\.(css|js|jpeg|jpg|png|svg)/, (req, res) => {
+app.get(/\.(css|js|jpeg|jpg|png|svg|ico)/, (req, res) => {
 
   publicFiles(req, res);
   

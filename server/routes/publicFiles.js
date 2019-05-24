@@ -29,6 +29,9 @@ function publicFiles(req, res) {
 		case '.svg':
 			contentType = 'image/svg+xml';
 			break;
+		case '.ico':
+			contentType = 'image/vnd.microsoft.icon';
+		break;
 		default:
 			contentType = 'text/plain';
 	}
