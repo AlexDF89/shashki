@@ -48,7 +48,7 @@ const boardSquareTarget = {
 
 function Cell(props) {
 
-  const { connectDropTarget, hovered, checker } = props;
+  const { connectDropTarget } = props;
 
   return connectDropTarget(
     <li className={`field-li ${props.data.user === 2 ? 'rotate180' : ''}`}>

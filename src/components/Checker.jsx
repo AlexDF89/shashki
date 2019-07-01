@@ -25,7 +25,7 @@ function collect(connect, monitor) {
 
 function Checker(props) {
 
-  const { isDragging, connectDragSource, checker } = props;
+  const { isDragging, connectDragSource } = props;
   const opacity = isDragging ? .5 : 1;
 
   return connectDragSource(
