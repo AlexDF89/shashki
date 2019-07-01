@@ -12,8 +12,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        </header>
+        <div className="back-to-main">
+          <a href="http://webdev-master.ru">Вернуться на главную</a>
+        </div>
 
         <FieldContainer />
 
