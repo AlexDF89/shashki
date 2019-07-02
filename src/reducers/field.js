@@ -4,7 +4,7 @@ export default function reducer(state = {user: 0, field: {
 		gameID: 0,
 		whoseMove: 0,
 		moves: [],
-		cells: []
+    cells: [],
 	}}, action) {
 
   switch(action.type) {

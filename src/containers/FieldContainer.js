@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 
 import Field from '../components/Field';
-import { handleDrop, highlightTargets } from '../actions';
+import { handleDrop, highlightTargets, showRules } from '../actions';
 
 function mapStateToProps(state) {
   return {
+    rules: state.rules,
     data: state.data
   }
 }
@@ -12,7 +13,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onHandleDrop: drop => dispatch(handleDrop(drop)),
-    onHighlightTargets: (checker, data, extinguishTargets) => dispatch(highlightTargets(checker, data, extinguishTargets))
+    onHighlightTargets: (checker, data, extinguishTargets) => dispatch(highlightTargets(checker, data, extinguishTargets)),
+    onShowRules: rules => dispatch(showRules(rules))
   }
 }
 

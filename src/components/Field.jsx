@@ -86,8 +86,9 @@ function Field(props) {
 				<div className="connectingLink-wrap">
 						<p>Для подключения к игре ваш противник должен перейти по ссылке:</p>
 						<p id="connectingLink" className="connectingLink">{`${window.location.host}/?id=${props.data.field.gameID}`}</p>
-						<button id="btn-copy" className="btn-copy">Скопировать</button>
 						<p className="connectingLink-message"><span id="connectingLink-message">Ссылка скопирована в буфер обмена</span></p>
+						<button id="btn-copy" className="btn-copy">Скопировать</button>
+						<button id="btn-rules-game" className="btn-rules-game" onClick={() => props.onShowRules(true)}>Правила игры</button>
 				</div>
 
 					{
@@ -103,6 +104,31 @@ function Field(props) {
 						</div>
 						:
 						''       
+					}
+
+					{
+						props.rules
+						?
+						<div className="rules-wrap">
+							<div className="rules-in">
+							<span className="rules-close" onClick={() => props.onShowRules(false)}>X</span>
+								<h2>Правила игры</h2>
+								<ul>
+									<li>Игра ведётся на доске 8х8 клеток, только на черных ячейках</li>
+									<li>Бить можно произвольное количество шашек в любых направлениях</li>
+									<li>Простые шашки ходят только вперёд</li>
+									<li>Простая шашка может срубить назад</li>
+									<li>Дамка ходит на любое число полей в любую сторону</li>
+									<li>Шашка снимается с поля после боя</li>
+									<li>Шашка превращается в дамку, достигнув восьмой (для белых) или первой (для черных) линии доски</li>
+									<li>Если шашка во время боя проходит через дамочное поле, то она превращается в дамку и следующие бои (если они возможны) совершает уже как дамка</li>
+									<li>Бить обязательно!</li>
+									<li>Проигрывает тот, у кого не остается фигур, либо ходов!</li>
+								</ul>
+							</div>
+						</div>
+						:
+						''
 					}
 			</div>
     </section>

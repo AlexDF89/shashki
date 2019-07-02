@@ -108,7 +108,7 @@
 .connectingLink-wrap {
   overflow: hidden;
   clear: both;
-  padding: 3px 10px;
+  padding: 3px 10px 10px;
 }
 .connectingLink {
   padding: 8px 10px;
@@ -117,6 +117,8 @@
   background-color: #aaa;
 }
 .connectingLink-message {
+  margin-top: 5px;
+  margin-bottom: 5px;
   overflow: hidden;
 }
 .connectingLink-message span {
@@ -167,8 +169,52 @@
   transition: all .3s;
   border: none;
   border-radius: 3px;
-
 }
 .btn-copy:hover {
   background-color: #bc6702;
+}
+.btn-rules-game {
+  color: #fff;
+  cursor: pointer;
+  background-color: #d37e19;
+  padding: 10px 20px;
+  transition: all .3s;
+  border: none;
+  border-radius: 3px;
+  float: right;
+}
+.rules-wrap {
+  background-color: rgba(0,0,0,.5);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.rules-in {
+  background-color: rgba(0,0,0,.7);
+  padding: 15px;
+  color: #ddd;
+  max-width: 480px;
+  margin: 0 auto;
+  margin-top: 8%;
+}
+.rules-in h2 {
+  text-align: center;
+}
+.rules-in li {
+  font-family: sans-serif;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.rules-close {
+  float: right;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+.rules-close:hover {
+  color: #fff;
 }
