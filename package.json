@@ -19,11 +19,12 @@
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node checkers.js",
+    "dev-frontend": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev-server": "nodemon index.js"
+    "dev-server": "./node_modules/.bin/nodemon checkers.js"
   },
   "eslintConfig": {
     "extends": "react-app"
