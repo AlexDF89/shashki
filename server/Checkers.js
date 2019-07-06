@@ -410,7 +410,9 @@ module.exports = class Checkers {
 
               }
 
-            }
+						}
+
+						break;
 
           }
 
@@ -500,7 +502,9 @@ module.exports = class Checkers {
 
               }
 
-            }
+						}
+						
+						break;
 
           }
 
@@ -594,7 +598,9 @@ module.exports = class Checkers {
 
               }
 
-            }
+						}
+						
+						break;
 
           }
 
@@ -684,7 +690,9 @@ module.exports = class Checkers {
 
               }
 
-            }
+						}
+						
+						break;
 
           }
 
