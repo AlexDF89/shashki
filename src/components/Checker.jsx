@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DragSource } from 'react-dnd';
+import { DragSource, DragPreviewImage } from 'react-dnd';
 
 const checkerSource = {
   beginDrag(props, monitor, component) {
@@ -25,11 +25,14 @@ function collect(connect, monitor) {
 
 function Checker(props) {
 
-  const { isDragging, connectDragSource } = props;
+  const { isDragging, connectDragSource, connectDragPreview } = props;
   const opacity = isDragging ? .5 : 1;
 
   return connectDragSource(
-    <img style={{opacity}} className='field-img' src={props.src} alt='' />
+		<div>
+			<DragPreviewImage src={props.src} connect={connectDragPreview} />
+    	<img style={{opacity}} className='field-img' src={props.src} alt='' />
+		</div>
   );
 }
 
